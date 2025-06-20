@@ -13,15 +13,6 @@ public interface UserService {
     void register(UserDto userDto);
 
     /**
-     * Authenticates a user with the provided email and password.
-     *
-     * @param email    the user's email
-     * @param password the user's password
-     * @return true if login is successful, false otherwise
-     */
-    boolean login(String email, String password);
-
-    /**
      * Retrieves a user by their email address.
      *
      * @param email the user's email

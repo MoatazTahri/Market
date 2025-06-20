@@ -6,9 +6,6 @@ import com.example.backend.mappers.UserMapper;
 import com.example.backend.models.user.UserDto;
 import com.example.backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +19,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
 
     @Override
     public void register(UserDto userDto) {
@@ -41,18 +37,6 @@ public class UserServiceImpl implements UserService {
                 .products(new HashSet<>())
                 .build();
         userRepository.save(user);
-    }
-
-    @Override
-    public boolean login(String email, String password) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, password)
-            );
-            return authentication.isAuthenticated();
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     @Override
