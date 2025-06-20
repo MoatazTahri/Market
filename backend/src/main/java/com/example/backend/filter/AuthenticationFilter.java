@@ -1,19 +1,13 @@
 package com.example.backend.filter;
 
-import com.example.backend.enumerations.UserRole;
 import com.example.backend.services.auth.AuthenticationService;
-import com.example.backend.services.jwt.JwtService;
-import com.example.backend.services.user.UserService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
