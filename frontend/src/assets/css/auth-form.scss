@@ -1,0 +1,78 @@
+@use 'variables' as *;
+
+.login-box {
+  padding: 50px;
+  margin: 100px auto;
+  min-height: 600px;
+  border-radius: 15px;
+  width: 40%;
+  -webkit-box-shadow: 0 2px 60px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 60px -5px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 988px){
+  .login-box {
+    width: 100%;
+  }
+}
+
+.logo {
+  width: 200px;
+  margin: auto;
+  padding: 25px 0;
+}
+
+.header-title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.login-form {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.login-form .form-control {
+  border-radius: 0;
+  margin-bottom: 30px;
+  &:focus {
+    box-shadow: 0 0 0;
+  }
+}
+
+
+.login-form .form-group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.login-form .form-control {
+  margin: 0;
+}
+
+.login-form a {
+  text-decoration: none;
+  color: $website_color;
+}
+
+.login-form .form-group .forgot-password {
+  position: absolute;
+  top: 6px;
+  right: 15px;
+}
+
+.login-form .btn {
+  border-radius: 5px;
+  transition: 0.5s;
+  min-height: 40px;
+  width: 150px;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  background: $main_button_color;
+  color: white;
+  &:hover {
+    color: white;
+    background-color: $main_button_hover_color;
+  }
+}

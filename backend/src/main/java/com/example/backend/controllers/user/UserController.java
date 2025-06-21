@@ -21,6 +21,16 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping("/find")
+    public UserDto getUserByEmail(@RequestParam String email) {
+        return userService.getUserByEmail(email);
+    }
+
+    @GetMapping("/check-email")
+    public boolean checkEmailExistence(@RequestParam String email) {
+        return userService.isEmailExists(email);
+    }
+
     @GetMapping("/all")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();

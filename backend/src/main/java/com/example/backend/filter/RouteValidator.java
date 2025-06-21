@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 public class RouteValidator {
 
     public static final List<String> openRoutes = List.of(
-            "/auth/register",
-            "/auth/login",
+            "/auth",
+            "/user/check-email",
             "/product/[0-9]+$", // Means product/{id}
             "/product/all"
     );

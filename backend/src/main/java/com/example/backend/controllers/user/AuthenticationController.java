@@ -1,17 +1,15 @@
 package com.example.backend.controllers.user;
 
-import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.models.user.AuthenticationRequest;
 import com.example.backend.models.user.UserDto;
 import com.example.backend.services.auth.AuthenticationService;
 import com.example.backend.services.user.UserService;
+import io.jsonwebtoken.Claims;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,15 +23,13 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
-        // If the user is new, register will be triggered
-        try {
-            userService.getUserByEmail(userDto.getEmail());
-            return ResponseEntity.badRequest().body("Email is already taken");
-        } catch (UserNotFoundException e) { // No email taken
-            userService.register(userDto);
-            return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<?> register(@Valid @RequestBody UserDto userDto) {
+        // Giving it the same response status as fields validation.
+        if (userService.isEmailExists(userDto.getEmail())) {
+            return new ResponseEntity<>(Map.of("email","Email is already taken"), HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        userService.register(userDto);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("/login")
@@ -51,6 +47,12 @@ public class AuthenticationController {
         return ResponseEntity.badRequest().body("Invalid email or password");
     }
 
+    @GetMapping("/claims")
+    public ResponseEntity<Object> getClaims(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        Claims claims = authService.getClaimsFromToken(token);
+        return ResponseEntity.ok(claims);
+    }
 
 
 
