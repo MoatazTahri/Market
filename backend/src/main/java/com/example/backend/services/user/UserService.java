@@ -13,6 +13,13 @@ public interface UserService {
     void register(UserDto userDto);
 
     /**
+     * Check if email already exists.
+
+     * @param email the user's email
+     * @return the true if email found
+     */
+    boolean isEmailExists(String email);
+    /**
      * Retrieves a user by their email address.
      *
      * @param email the user's email
