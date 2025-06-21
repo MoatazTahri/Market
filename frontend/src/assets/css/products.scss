@@ -1,0 +1,54 @@
+@use "variables" as *;
+
+.product-card-container {
+  padding: 10px 20px;
+}
+
+.product-card-container .product-card {
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  cursor: pointer;
+  transition: 0.4s;
+  .image {
+    height: 350px;
+  }
+
+  .name {
+    font-family: "Roboto Thin", sans-serif;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; // To limit product name in 2 lines, otherwise 3 dots "..."
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .category {
+    color: #9e9e9e;
+  }
+
+  .price {
+    color: $website_color;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: "Roboto Thin", sans-serif;
+  }
+  .btn {
+    background-color: $main_button_color;
+    color: white;
+    margin-top: 10px;
+    width: 50%;
+    border-radius: 20px;
+    &:hover {
+      background-color: $main_button_hover_color;
+    }
+  }
+}
+
+.product-card-container .product-card:hover {
+  transform: scale(1.02);
+}

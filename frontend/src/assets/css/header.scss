@@ -1,0 +1,12 @@
+@use "variables" as *;
+
+.website-navbar {
+  padding: 20px;
+  background-color: #fcfcfc;
+  a {
+    font-family: Cairo, sans-serif;
+  }
+  a:hover {
+    color: $website_color;
+  }
+}
