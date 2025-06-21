@@ -6,5 +6,5 @@ public enum ProductCategory {
     LAPTOP,
     DESKTOP,
     PRINTER,
-    ACCESSORIES
+    ACCESSORY
 }
