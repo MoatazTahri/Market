@@ -24,7 +24,7 @@ public class UserDto {
     @NotBlank(message = "Email is required")
     private String email;
     @NotBlank(message = "Password is required")
-    @Pattern(regexp = "^[a-zA-Z0-9]*$") // Not specified size in this pattern
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Password must contains only letters are numbers") // Not specified size in this pattern
     @Size(min = 8, max = 16, message = "Password must be between 8 and 16 characters") // Here making size limitation
     private String password;
     @NotBlank(message = "First name is required")
