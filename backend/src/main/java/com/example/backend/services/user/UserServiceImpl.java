@@ -1,6 +1,7 @@
 package com.example.backend.services.user;
 
 import com.example.backend.entities.User;
+import com.example.backend.enumerations.UserRole;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.mappers.UserMapper;
 import com.example.backend.models.user.UserDto;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
                 .lastName(userDto.getLastName())
                 .phoneNumber(userDto.getPhoneNumber())
                 .profilePictureName(userDto.getProfilePictureName())
-                .role(userDto.getRole())
+                .role(UserRole.CUSTOMER)
                 .active(true)
                 .locked(false)
                 .expired(false)
@@ -37,6 +38,11 @@ public class UserServiceImpl implements UserService {
                 .products(new HashSet<>())
                 .build();
         userRepository.save(user);
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 
     @Override
