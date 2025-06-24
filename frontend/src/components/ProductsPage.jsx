@@ -4,6 +4,7 @@ import {getAllProducts} from "../services/ProductService.js";
 
 function ProductsPage() {
     const [products, setProducts] = useState([])
+    const API_URL = import.meta.env.VITE_API_URL
     useEffect(() => {
         getAllProducts().then((response) => {
             setProducts(response.data);
@@ -14,14 +15,14 @@ function ProductsPage() {
     return (
         <div>
             <div className="text-center p-5">
-                <h1> Products </h1>
+                <h1> Welcome </h1>
             </div>
             <div className="row container m-auto py-5 row-gap-4">
                 {products.map((product, key) =>
                     <div key={key} className="product-card-container col-md-4">
                         <div className="product-card">
                             <div className="image"
-                                 style={{background: `url('/img/iphone14-pro.jpg') center/contain no-repeat`}}/>
+                                 style={{background: `url('${API_URL + product.imagePath}') center/contain no-repeat`}}/>
                             <div className="category">
                                 {product.category}
                             </div>
