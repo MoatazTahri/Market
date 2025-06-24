@@ -1,5 +1,6 @@
 package com.example.backend.controllers.user;
 
+import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.models.user.UserDto;
 import com.example.backend.services.user.UserService;
 import jakarta.validation.Valid;
@@ -23,7 +24,11 @@ public class UserController {
 
     @GetMapping("/find")
     public UserDto getUserByEmail(@RequestParam String email) {
-        return userService.getUserByEmail(email);
+        try {
+            return userService.getUserByEmail(email);
+        } catch (UserNotFoundException e) {
+            return null;
+        }
     }
 
     @GetMapping("/check-email")
