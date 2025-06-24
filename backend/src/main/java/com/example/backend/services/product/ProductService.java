@@ -1,6 +1,7 @@
 package com.example.backend.services.product;
 
-import com.example.backend.models.product.ProductDto;
+import com.example.backend.models.product.ProductRequest;
+import com.example.backend.models.product.ProductResponse;
 
 import java.util.List;
 
@@ -8,16 +9,16 @@ public interface ProductService {
     /**
      * Adds a new product to the system.
      *
-     * @param productDto the product to be added
+     * @param productRequest the product to be added
      */
-    void addProduct(ProductDto productDto);
+    void addProduct(ProductRequest productRequest);
 
     /**
      * Updates an existing product.
      *
-     * @param productDto the product with updated information
+     * @param productRequest the product with updated information
      */
-    void updateProduct(ProductDto productDto);
+    void updateProduct(ProductRequest productRequest);
 
     /**
      * Deletes a product by its ID.
@@ -31,7 +32,7 @@ public interface ProductService {
      *
      * @return a list of all products
      */
-    List<ProductDto> getAllProducts();
+    List<ProductResponse> getAllProducts();
 
     /**
      * Retrieves a product by its ID.
@@ -39,5 +40,13 @@ public interface ProductService {
      * @param id the ID of the product to retrieve
      * @return the product with the given ID
      */
-    ProductDto getProductById(Long id);
+    ProductResponse getProductById(Long id);
+
+    /**
+     * Retrieves all products by the owner ID.
+     *
+     * @param userId the ID of the user to retrieve their products.
+     * @return list of products with the given user ID
+     */
+    List<ProductResponse> getProductsByOwner(Long userId);
 }
