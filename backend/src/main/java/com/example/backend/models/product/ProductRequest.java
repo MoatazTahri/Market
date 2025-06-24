@@ -27,7 +27,7 @@ public class ProductRequest {
     @Positive(message = "Price must be greater than 0")
     private Double price;
     @NotNull(message = "Stock is required")
-    @Min(value = 0, message = "Stock must be greater than 0")
+    @Min(value = 1, message = "Stock must be 1 at least")
     private Integer stock;
     @NotNull(message = "Category is required")
     private ProductCategory category;
