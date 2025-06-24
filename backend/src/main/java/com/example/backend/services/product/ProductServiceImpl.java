@@ -5,13 +5,20 @@ import com.example.backend.entities.User;
 import com.example.backend.exceptions.ProductNotFoundException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.mappers.ProductMapper;
-import com.example.backend.models.product.ProductDto;
+import com.example.backend.models.product.ProductRequest;
+import com.example.backend.models.product.ProductResponse;
 import com.example.backend.repositories.ProductRepository;
 import com.example.backend.repositories.UserRepository;
+import com.example.backend.tools.FileUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.List;
 
@@ -24,34 +31,45 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public void addProduct(ProductDto productDto) {
-        User seller = userRepository.findById(productDto.getSellerId())
+    public void addProduct(ProductRequest productRequest) {
+        User seller = userRepository.findById(productRequest.getSellerId())
                 .orElseThrow(() -> new UserNotFoundException("Seller account not found"));
-        Product product = Product.builder()
-                .name(productDto.getName())
-                .skuCode(productDto.getSkuCode())
-                .description(productDto.getDescription())
-                .price(productDto.getPrice())
-                .stock(productDto.getStock())
-                .category(productDto.getCategory())
-                .imageName(productDto.getImageName())
-                .createdAt(Instant.now())
-                .seller(seller)
-                .build();
-        productRepository.save(product);
+        Path uploadDir = Paths.get("uploads/products");
+        try {
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir);
+            }
+            String codedImageName = FileUtil.codeFileName(productRequest.getImage().getOriginalFilename());
+            Path imagePath = uploadDir.resolve(codedImageName);
+            Files.copy(productRequest.getImage().getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+            Product product = Product.builder()
+                    .name(productRequest.getName())
+                    .skuCode(productRequest.getSkuCode())
+                    .description(productRequest.getDescription())
+                    .price(productRequest.getPrice())
+                    .stock(productRequest.getStock())
+                    .category(productRequest.getCategory())
+                    .imageName(codedImageName)
+                    .createdAt(Instant.now())
+                    .seller(seller)
+                    .build();
+            productRepository.save(product);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not save product image. " + e);
+        }
     }
 
     @Override
-    public void updateProduct(ProductDto productDto) {
-        Product product = productRepository.findById(productDto.getId())
+    public void updateProduct(ProductRequest productRequest) {
+        Product product = productRepository.findById(productRequest.getId())
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-        product.setName(productDto.getName());
-        product.setSkuCode(productDto.getSkuCode());
-        product.setDescription(productDto.getDescription());
-        product.setPrice(productDto.getPrice());
-        product.setStock(productDto.getStock());
-        product.setCategory(productDto.getCategory());
-        product.setImageName(productDto.getImageName());
+        product.setName(productRequest.getName());
+        product.setSkuCode(productRequest.getSkuCode());
+        product.setDescription(productRequest.getDescription());
+        product.setPrice(productRequest.getPrice());
+        product.setStock(productRequest.getStock());
+        product.setCategory(productRequest.getCategory());
+        product.setImageName(productRequest.getImage().getOriginalFilename ());
         productRepository.save(product);
     }
 
@@ -61,14 +79,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProducts() {
-        return productRepository.findAll().stream().map(ProductMapper::toProductDto).toList();
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream().map(ProductMapper::toProductResponse).toList();
     }
 
     @Override
-    public ProductDto getProductById(Long id) {
+    public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-        return ProductMapper.toProductDto(product);
+        return ProductMapper.toProductResponse(product);
+    }
+
+    @Override
+    public List<ProductResponse> getProductsByOwner(Long userId) {
+        return productRepository.findAllBySellerId(userId)
+                .stream()
+                .map(ProductMapper::toProductResponse)
+                .toList();
     }
 }
