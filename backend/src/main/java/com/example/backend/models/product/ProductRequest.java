@@ -1,20 +1,21 @@
 package com.example.backend.models.product;
 
 import com.example.backend.enumerations.ProductCategory;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
+import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class ProductDto {
+public class ProductRequest {
     private Long id;
     @NotBlank(message = "Name is required")
     private String name;
@@ -23,13 +24,14 @@ public class ProductDto {
     @NotBlank(message = "Description is required")
     private String description;
     @NotNull(message = "Price is required")
-    private double price;
+    @Positive(message = "Price must be greater than 0")
+    private Double price;
     @NotNull(message = "Stock is required")
-    private int stock;
+    @Min(value = 0, message = "Stock must be greater than 0")
+    private Integer stock;
     @NotNull(message = "Category is required")
     private ProductCategory category;
-    @NotBlank(message = "Image name is required")
-    private String imageName;
-    private Instant createdAt;
+    @NotNull(message = "Image is required")
+    private MultipartFile image;
     private Long sellerId;
 }
