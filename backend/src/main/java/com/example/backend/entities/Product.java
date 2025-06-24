@@ -23,6 +23,7 @@ public class Product {
     private String description;
     private double price;
     private int stock;
+    @Enumerated(EnumType.STRING)
     private ProductCategory category;
     private String imageName;
     private Instant createdAt;
