@@ -24,7 +24,9 @@ public class User {
     private String phoneNumber;
     @Column(name = "pp_name")
     private String profilePictureName;
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+    private String refreshToken;
     private boolean active;
     private boolean locked;
     private boolean expired;
