@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import "../assets/css/auth-form.scss"
-import {authenticate} from "../services/AuthService.js";
-import Cookies from "js-cookie";
+import {authenticate, extractTokenClaims} from "../services/AuthService.js";
 import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
@@ -12,12 +11,13 @@ function LoginForm() {
     function login(e) {
         e.preventDefault()
         authenticate(email, password).then((response) => {
-            Cookies.remove("token")
-            const token = response.data.token;
-            Cookies.set("token", token, {
-                expires: 1, // 1 day
-                secure: false, // for developing
-                sameSite: "strict"
+            const {accessToken, refreshToken} = response.data;
+            localStorage.setItem("accessToken", accessToken)
+            localStorage.setItem("refreshToken", refreshToken)
+            extractTokenClaims(refreshToken).then((response) => {
+                localStorage.setItem("email", response.data.email)
+            }).catch((error) => {
+                console.log(error)
             })
             alert("Login successful")
             navigate("/")

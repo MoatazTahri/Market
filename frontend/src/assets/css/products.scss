@@ -1,5 +1,18 @@
 @use "variables" as *;
 
+.main-button {
+  margin-top: 10px;
+  width: 200px;
+  border-radius: 10px;
+  background-color: $main_button_color;
+  color: white;
+  font-size: 18px;
+  &:hover {
+    color: white;
+    background-color: $main_button_hover_color;
+  }
+}
+
 .product-card-container {
   padding: 10px 20px;
 }
@@ -22,8 +35,8 @@
     font-weight: bold;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2; // To limit product name in 2 lines, otherwise 3 dots "..."
-    line-clamp: 2;
+    -webkit-line-clamp: 1; // To limit product name in 1 line, otherwise: dots "..."
+    line-clamp: 1;
     -webkit-box-orient: vertical;
   }
 
@@ -51,4 +64,29 @@
 
 .product-card-container .product-card:hover {
   transform: scale(1.02);
+}
+
+.product-card-container .product-card.management {
+  cursor: default;
+  &:hover {
+    transform: none;
+  }
+  .btn.update {
+    background-color: #0aa600;
+    margin: 10px;
+    width: 40%;
+    border-radius: 5px;
+    &:hover {
+      background-color: #008000;
+    }
+  }
+  .btn.delete {
+    background-color: #ff0000;
+    margin: 10px;
+    width: 40%;
+    border-radius: 5px;
+    &:hover {
+      background-color: #cc0000;
+    }
+  }
 }

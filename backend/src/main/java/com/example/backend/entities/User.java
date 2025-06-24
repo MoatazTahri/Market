@@ -3,6 +3,7 @@ package com.example.backend.entities;
 import com.example.backend.enumerations.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.Instant;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicUpdate
 @Builder
 @Getter
 @Setter

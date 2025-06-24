@@ -59,22 +59,43 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional
     @Override
     public void updateProduct(ProductRequest productRequest) {
         Product product = productRepository.findById(productRequest.getId())
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-        product.setName(productRequest.getName());
-        product.setSkuCode(productRequest.getSkuCode());
-        product.setDescription(productRequest.getDescription());
-        product.setPrice(productRequest.getPrice());
-        product.setStock(productRequest.getStock());
-        product.setCategory(productRequest.getCategory());
-        product.setImageName(productRequest.getImage().getOriginalFilename ());
-        productRepository.save(product);
+        Path uploadDir = Paths.get("uploads/products");
+        try {
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir);
+            }
+            Files.deleteIfExists(uploadDir.resolve(product.getImageName()));
+            String codedImageName = FileUtil.codeFileName(productRequest.getImage().getOriginalFilename());
+            Path imagePath = uploadDir.resolve(codedImageName);
+            Files.copy(productRequest.getImage().getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+            product.setName(productRequest.getName());
+            product.setSkuCode(productRequest.getSkuCode());
+            product.setDescription(productRequest.getDescription());
+            product.setPrice(productRequest.getPrice());
+            product.setStock(productRequest.getStock());
+            product.setCategory(productRequest.getCategory());
+            product.setImageName(codedImageName);
+            productRepository.save(product);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not save product image. " + e);
+        }
     }
 
     @Override
     public void deleteProductById(Long id) {
+        Product product = productRepository.findById(id)
+                        .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Path uploadDir = Paths.get("uploads/products");
+        try {
+            Files.deleteIfExists(uploadDir.resolve(product.getImageName()));
+        } catch (IOException e) {
+            throw new RuntimeException("Could not delete product image. " + e);
+        }
         productRepository.deleteById(id);
     }
 

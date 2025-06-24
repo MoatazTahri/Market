@@ -3,10 +3,30 @@
 .website-navbar {
   padding: 20px;
   background-color: #fcfcfc;
-  a {
-    font-family: Cairo, sans-serif;
-  }
   a:hover {
+    color: $website_color;
+  }
+}
+
+.website-navbar .profile-picture {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.website-navbar .dropdown {
+  button {
+    border: none;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.65);
+  }
+  .dropdown-menu {
+    border-radius: 0;
+    min-width: max-content;
+    width: 120px;
+  }
+  .dropdown-menu li button:hover {
     color: $website_color;
   }
 }

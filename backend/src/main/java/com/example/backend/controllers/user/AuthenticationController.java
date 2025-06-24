@@ -50,7 +50,9 @@ public class AuthenticationController {
             userInfo.put("email", userDto.getEmail());
             userInfo.put("role", userDto.getRole().name());
             String accessToken = authService.generateToken(userInfo, ACCESS_TOKEN_EXPIRATION_TIME);
-            String refreshToken = userDto.getRefreshToken();
+            String refreshToken = authService.generateToken(userInfo, REFRESH_TOKEN_EXPIRATION_TIME);
+            userDto.setRefreshToken(refreshToken);
+            userService.updateUser(userDto);
             return new ResponseEntity<>(
                     Map.of(
                             "accessToken", accessToken,

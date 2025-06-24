@@ -1,41 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import "../assets/css/header.scss"
-import {extractTokenClaims} from "../services/AuthService.js";
 import {getUserByEmail} from "../services/UserService.js";
-import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 
 function Header() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState()
     const navigate = useNavigate()
     useEffect(() => {
-        const token = Cookies.get("token")
-        if (token !== undefined) {
-            extractTokenClaims(token).then((response) => {
-                setEmail(response.data.email)
+        const token = localStorage.getItem("refreshToken")
+        const storedEmail = localStorage.getItem("email")
+        if (token) {
+            getUserByEmail(storedEmail).then((response) => {
+                setFirstName(response.data.firstName)
+                setLastName(response.data.lastName)
                 setIsLoggedIn(true)
-                getUserByEmail(email).then((response) => {
-                    setFirstName(response.data.firstName)
-                    setLastName(response.data.lastName)
-                }).catch((error) => {
-                    console.log(error)
-                })
             }).catch((error) => {
                 console.log(error)
+                setIsLoggedIn(false)
             })
         }
-    }, [email]);
+    }, [isLoggedIn]);
+
     function logout() {
-        Cookies.remove("token")
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("refreshToken")
+        localStorage.removeItem("email")
         setIsLoggedIn(false)
-        setFirstName('')
-        setLastName('')
-        setEmail('')
         navigate("/login")
     }
+
     return (
         <nav className="website-navbar navbar navbar-expand-lg">
             <a className="navbar-brand brand" href="/">
@@ -58,23 +53,32 @@ function Header() {
                     </li>
                 </ul>
                 {isLoggedIn ?
-                    <>
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <a className="nav-link">{firstName + " " + lastName}</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" onClick={logout}>Logout</a>
-                        </li>
-                    </ul>
-                    </>
+                    <div className="d-flex align-items-center">
+                        <div className="profile-picture order-lg-2 ms-lg-2"
+                             style={{background: "url('/img/default-profile-picture.png') center/cover no-repeat"}}></div>
+                        <div className="dropdown order-lg-1">
+                            <button className="dropdown-toggle" type="button" id="dropdownMenu2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                {firstName} {lastName}
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenu2">
+                                <li>
+                                    <button className="dropdown-item" type="button"
+                                            onClick={() => navigate('/my-products')}>Management
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="dropdown-item" type="button" onClick={logout}>Logout</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     :
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <a className="nav-link" href="/login">Login</a>
                         </li>
                     </ul>
-
                 }
             </div>
         </nav>

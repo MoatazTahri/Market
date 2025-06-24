@@ -54,8 +54,13 @@ public class ProductController {
         return productService.getProductsByOwner(userId);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateProduct(@Valid @RequestBody ProductRequest productRequest) {
+    @PutMapping(value = "/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updateProduct(@Valid @ModelAttribute ProductRequest productRequest, BindingResult br) {
+        if (br.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            br.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         productService.updateProduct(productRequest);
         return ResponseEntity.ok("Product updated successfully");
     }
