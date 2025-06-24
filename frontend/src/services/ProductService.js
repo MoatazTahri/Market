@@ -1,19 +1,32 @@
-import axios from "axios";
-import Cookies from "js-cookie";
+import axiosInstance from "./axiosInstance.js";
 
-const API_URL = import.meta.env.VITE_API_URL
 
-// Send one global header for all secured paths
-const api = axios.create({
-    headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`
-    }
-})
+
+
+export const createProduct = (product) => {
+    return axiosInstance.post("/product/create", product)
+}
+
+export const updateProduct = (product) => {
+    return axiosInstance.put("/product/update", product)
+}
 
 export const getAllProducts = () => {
-    return api.get(API_URL + "/product/all")
+    return axiosInstance.get("/product/all")
+}
+
+export const getAllProductsByUserId = (userId) => {
+    return axiosInstance.get(`/product/all/${userId}`)
 }
 
 export const getProductById = (id) => {
-    return api.get(API_URL + "/product/" + id)
+    return axiosInstance.get("/product/" + id)
+}
+
+export const getAllProductCategories = () => {
+    return axiosInstance.get("/product/categories")
+}
+
+export const deleteProduct = (id) => {
+    return axiosInstance.delete("/product/delete/" + id)
 }
