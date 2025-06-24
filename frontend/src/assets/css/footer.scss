@@ -1,0 +1,48 @@
+@use "variables" as *;
+
+.footer {
+  height: 400px;
+  padding: 40px;
+  color: black;
+  background-color: #f8f8f8;
+}
+
+.footer .website-name {
+  font-size: 36px;
+  text-align: center;
+  color: $website_color;
+}
+
+.footer .options {
+  text-align: center;
+  margin-top: 50px;
+  a {
+    text-decoration: none;
+    color: black;
+    margin: 0 15px;
+    &:hover {
+      color: $main_button_hover_color;
+    }
+  }
+}
+
+.footer .links {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  .link-icon i {
+    transition: 0.5s;
+    margin: 0 15px;
+    font-size: 32px;
+    color: black;
+    &:hover {
+      color: $main_button_hover_color;
+    }
+  }
+}
+
+.footer .copyrights {
+  text-align: center;
+  margin-top: 50px;
+}
