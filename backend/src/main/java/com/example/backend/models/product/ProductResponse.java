@@ -1,7 +1,6 @@
-package com.example.backend.entities;
+package com.example.backend.models.product;
 
 import com.example.backend.enumerations.ProductCategory;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,25 +8,19 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductResponse {
     private Long id;
     private String name;
     private String skuCode;
     private String description;
     private double price;
     private int stock;
-    @Enumerated(EnumType.STRING)
     private ProductCategory category;
-    private String imageName;
+    private String imagePath;
     private Instant createdAt;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-    private User seller;
+    private Long sellerId;
 }

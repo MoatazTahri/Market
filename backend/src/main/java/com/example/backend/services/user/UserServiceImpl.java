@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(userDto.getPhoneNumber())
                 .profilePictureName(userDto.getProfilePictureName())
                 .role(UserRole.CUSTOMER)
+                .refreshToken(userDto.getRefreshToken())
                 .active(true)
                 .locked(false)
                 .expired(false)

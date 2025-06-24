@@ -1,7 +1,7 @@
 package com.example.backend.models.user;
 
 import com.example.backend.enumerations.UserRole;
-import com.example.backend.models.product.ProductDto;
+import com.example.backend.models.product.ProductResponse;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -34,9 +34,10 @@ public class UserDto {
     private String phoneNumber;
     private String profilePictureName;
     private UserRole role;
+    private String refreshToken;
     private boolean active;
     private boolean locked;
     private boolean expired;
     private Instant createdAt;
-    private Set<ProductDto> products;
+    private Set<ProductResponse> products;
 }

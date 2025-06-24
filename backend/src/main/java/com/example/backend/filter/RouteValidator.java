@@ -12,6 +12,7 @@ public class RouteValidator {
 
     public static final List<String> openRoutes = List.of(
             "/auth",
+            "/uploads/products",
             "/user/check-email",
             "/product/[0-9]+$", // Means product/{id}
             "/product/all"
