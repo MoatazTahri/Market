@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 function Header() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [isLoggedIn, setIsLoggedIn] = useState()
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
     const navigate = useNavigate()
     useEffect(() => {
         const token = localStorage.getItem("refreshToken")
@@ -15,7 +15,7 @@ function Header() {
             getUserByEmail(storedEmail).then((response) => {
                 setFirstName(response.data.firstName)
                 setLastName(response.data.lastName)
-                setIsLoggedIn(true)
+                response.data? setIsLoggedIn(true) : false
             }).catch((error) => {
                 console.log(error)
                 setIsLoggedIn(false)
