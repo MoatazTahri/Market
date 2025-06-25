@@ -18,7 +18,7 @@ function ProductsPage() {
                 <h1> Welcome </h1>
             </div>
             <div className="row container m-auto py-5 row-gap-4">
-                {products.length === 0 && <div className="text-center"> No products found, login to add them </div>}
+                {products.length === 0 && <div className="m-auto w-25"> No product found, you can add some by going to your management page in your profile (create account / login first).  </div>}
                 {products.map((product, key) =>
                     <div key={key} className="product-card-container col-md-4">
                         <div className="product-card">
