@@ -18,6 +18,7 @@ function ProductsPage() {
                 <h1> Welcome </h1>
             </div>
             <div className="row container m-auto py-5 row-gap-4">
+                {products.length === 0 && <div className="text-center"> No products found, login to add them </div>}
                 {products.map((product, key) =>
                     <div key={key} className="product-card-container col-md-4">
                         <div className="product-card">
