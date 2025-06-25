@@ -15,7 +15,7 @@ function SignupForm() {
     function onSubmit(e) {
         e.preventDefault()
         const user = {firstName, lastName, email, password}
-        if (password !== confirmPassword) {
+        if (password !== confirmPassword && password !== null && firstName !== '' && lastName !== '' && email !== '' && password !== '' && confirmPassword !== '') {
             setErrors({confirmPassword: "Passwords don't match"})
             return
         }
